@@ -1,0 +1,530 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: regenerate VS Code configs",
+      "command": "node",
+      "args": [
+        "scripts/generate-vscode-config.mjs"
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: ESP32 setup",
+      "command": "./scripts/esp32s3-touch-amoled-2.06.sh",
+      "args": [
+        "setup"
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: build selected example",
+      "command": "./scripts/esp32s3-touch-amoled-2.06.sh",
+      "args": [
+        "build",
+        {
+          "value": "--app=${input:geaEmbeddedExample}",
+          "quoting": "strong"
+        }
+      ],
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: USB flash selected example",
+      "command": "./scripts/esp32s3-touch-amoled-2.06.sh",
+      "args": [
+        "flash",
+        {
+          "value": "--app=${input:geaEmbeddedExample}",
+          "quoting": "strong"
+        },
+        {
+          "value": "${input:geaEmbeddedSerialPort}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: USB flash + monitor selected example",
+      "command": "./scripts/esp32s3-touch-amoled-2.06.sh",
+      "args": [
+        "flash-monitor",
+        {
+          "value": "--app=${input:geaEmbeddedExample}",
+          "quoting": "strong"
+        },
+        {
+          "value": "${input:geaEmbeddedSerialPort}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: serial monitor",
+      "command": "./scripts/esp32s3-touch-amoled-2.06.sh",
+      "args": [
+        "monitor",
+        {
+          "value": "${input:geaEmbeddedSerialPort}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: OTA selected example",
+      "command": "./scripts/esp32s3-touch-amoled-2.06.sh",
+      "args": [
+        "ota",
+        {
+          "value": "${input:geaEmbeddedBoardIp}",
+          "quoting": "strong"
+        },
+        {
+          "value": "--app=${input:geaEmbeddedExample}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: OTA selected example + logs",
+      "command": "./scripts/esp32s3-touch-amoled-2.06.sh",
+      "args": [
+        "ota-monitor",
+        {
+          "value": "${input:geaEmbeddedBoardIp}",
+          "quoting": "strong"
+        },
+        {
+          "value": "--app=${input:geaEmbeddedExample}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: install selected app over USB",
+      "command": "npm",
+      "args": [
+        "run",
+        "install-app",
+        "--",
+        {
+          "value": "${input:geaEmbeddedInstallApp}",
+          "quoting": "strong"
+        },
+        {
+          "value": "--port=${input:geaEmbeddedSerialPort}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: install all apps over USB",
+      "command": "npm",
+      "args": [
+        "run",
+        "install-app",
+        "--",
+        "all",
+        {
+          "value": "--port=${input:geaEmbeddedSerialPort}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: install selected app over OTA",
+      "command": "npm",
+      "args": [
+        "run",
+        "install-app",
+        "--",
+        {
+          "value": "${input:geaEmbeddedInstallApp}",
+          "quoting": "strong"
+        },
+        {
+          "value": "--ota=${input:geaEmbeddedBoardIp}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: install all apps over OTA",
+      "command": "npm",
+      "args": [
+        "run",
+        "install-app",
+        "--",
+        "all",
+        {
+          "value": "--ota=${input:geaEmbeddedBoardIp}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: recover launcher over USB",
+      "command": "npm",
+      "args": [
+        "run",
+        "recover-apps",
+        "--",
+        {
+          "value": "--port=${input:geaEmbeddedSerialPort}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: uninstall selected app over USB",
+      "command": "npm",
+      "args": [
+        "run",
+        "uninstall-app",
+        "--",
+        {
+          "value": "${input:geaEmbeddedUninstallApp}",
+          "quoting": "strong"
+        },
+        {
+          "value": "--port=${input:geaEmbeddedSerialPort}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: uninstall all apps over USB",
+      "command": "npm",
+      "args": [
+        "run",
+        "uninstall-app",
+        "--",
+        "all",
+        {
+          "value": "--port=${input:geaEmbeddedSerialPort}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: uninstall selected app over OTA",
+      "command": "npm",
+      "args": [
+        "run",
+        "uninstall-app",
+        "--",
+        {
+          "value": "${input:geaEmbeddedUninstallApp}",
+          "quoting": "strong"
+        },
+        {
+          "value": "--ota=${input:geaEmbeddedBoardIp}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: uninstall all apps over OTA",
+      "command": "npm",
+      "args": [
+        "run",
+        "uninstall-app",
+        "--",
+        "all",
+        {
+          "value": "--ota=${input:geaEmbeddedBoardIp}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: format apps over USB",
+      "command": "npm",
+      "args": [
+        "run",
+        "format-apps",
+        "--",
+        {
+          "value": "--port=${input:geaEmbeddedSerialPort}",
+          "quoting": "strong"
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "label": "Gea Embedded: format apps over OTA",
+      "command": "npm",
+      "args": [
+        "run",
+        "format-apps",
+        "--",
+        {
+          "value": "--ota=${input:geaEmbeddedBoardIp}",
+          "quoting": "strong"
+        }
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "geaEmbeddedExample",
+      "type": "pickString",
+      "description": "ESP32-enabled example to build/deploy",
+      "options": [
+        "app-launcher",
+        "bouncing-balls",
+        "image-demo",
+        "analog-clock",
+        "static-card",
+        "typography",
+        "tilt-breakout",
+        "button-tetris",
+        "tic-tac-toe",
+        "bouncing-balls-jsx",
+        "hid-clicker",
+        "sky-hop",
+        "sky-hop-jsx"
+      ],
+      "default": "app-launcher"
+    },
+    {
+      "id": "geaEmbeddedSerialPort",
+      "type": "promptString",
+      "description": "USB serial port, or auto to let ESP-IDF detect it.",
+      "default": "auto"
+    },
+    {
+      "id": "geaEmbeddedInstallApp",
+      "type": "pickString",
+      "description": "App to install into the launcher",
+      "options": [
+        "bouncing-balls",
+        "image-demo",
+        "analog-clock",
+        "static-card",
+        "typography",
+        "tilt-breakout",
+        "button-tetris",
+        "tic-tac-toe",
+        "bouncing-balls-jsx",
+        "hid-clicker",
+        "sky-hop",
+        "sky-hop-jsx"
+      ],
+      "default": "button-tetris"
+    },
+    {
+      "id": "geaEmbeddedUninstallApp",
+      "type": "pickString",
+      "description": "App to uninstall from the launcher",
+      "options": [
+        "bouncing-balls",
+        "image-demo",
+        "analog-clock",
+        "static-card",
+        "typography",
+        "tilt-breakout",
+        "button-tetris",
+        "tic-tac-toe",
+        "bouncing-balls-jsx",
+        "hid-clicker",
+        "sky-hop",
+        "sky-hop-jsx"
+      ],
+      "default": "button-tetris"
+    },
+    {
+      "id": "geaEmbeddedBoardIp",
+      "type": "promptString",
+      "description": "Board IP address for WiFi OTA deploy",
+      "default": ""
+    }
+  ]
+}

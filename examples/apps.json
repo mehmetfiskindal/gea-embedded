@@ -1,0 +1,200 @@
+{
+  "apps": [
+    {
+      "id": "app-launcher",
+      "root": "examples/app-launcher",
+      "entry": "index.tsx",
+      "runtime": "app-render",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "bouncing-balls",
+      "root": "examples/bouncing-balls",
+      "entry": "index.ts",
+      "runtime": "screen",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "image-demo",
+      "root": "examples/image-demo",
+      "entry": "index.ts",
+      "runtime": "screen",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "analog-clock",
+      "root": "examples/analog-clock",
+      "entry": "index.tsx",
+      "runtime": "app-render",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "watch-face",
+      "root": "examples/watch-face",
+      "entry": "index.tsx",
+      "runtime": "app-render",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": false
+        }
+      }
+    },
+    {
+      "id": "static-card",
+      "root": "examples/static-card",
+      "entry": "index.tsx",
+      "runtime": "app-render",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "typography",
+      "root": "examples/typography",
+      "entry": "index.tsx",
+      "runtime": "app-render",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "tilt-breakout",
+      "root": "examples/tilt-breakout",
+      "entry": "index.tsx",
+      "runtime": "app-render",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "button-tetris",
+      "root": "examples/button-tetris",
+      "entry": "index.tsx",
+      "runtime": "app-render",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "tic-tac-toe",
+      "root": "examples/tic-tac-toe",
+      "entry": "index.tsx",
+      "runtime": "app-render",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "bouncing-balls-jsx",
+      "root": "examples/bouncing-balls-jsx",
+      "entry": "index.tsx",
+      "runtime": "app-render",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "hid-clicker",
+      "root": "examples/hid-clicker",
+      "entry": "src/index.tsx",
+      "runtime": "app-render",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "sky-hop",
+      "root": "examples/sky-hop",
+      "entry": "index.ts",
+      "runtime": "screen",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "sky-hop-jsx",
+      "root": "examples/sky-hop-jsx",
+      "entry": "index.tsx",
+      "runtime": "app-render",
+      "targets": {
+        "web": {
+          "enabled": true
+        },
+        "esp32": {
+          "enabled": true
+        }
+      }
+    }
+  ]
+}

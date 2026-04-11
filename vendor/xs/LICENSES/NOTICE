@@ -1,0 +1,44 @@
+   Copyright (C) 2010-2015 Marvell Semiconductor, Inc.
+   Copyright (C) 2010-2015 Marvell International Ltd.
+   Copyright (C) 2002-2010 Kinoma, Inc.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+This software is also based on open-source. Attributions are provided as follows:
+
+1. This software is based in part of the work of dtoa. dtoa is licensed under David M. Gay License; the license is available at http://www.netlib.org/fp/dtoa.c
+The author of this software is David M. Gay.
+Copyright (c) 1991, 2000, 2001 by Lucent Technologies.
+
+Permission to use, copy, modify, and distribute this software for any purpose without fee is hereby granted, provided that this entire notice is included in all copies of any software which is or includes a copy or modification of this software and in all copies of the supporting documentation for such software.
+
+THIS SOFTWARE IS BEING PROVIDED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED WARRANTY. IN PARTICULAR, NEITHER THE AUTHOR NOR LUCENT MAKES ANY REPRESENTATION OR WARRANTY OF ANY KIND CONCERNING THE MERCHANTABILITY OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
+
+2. This software is based in part of the work of expat. expat is licensed under MIT License; the license is available via http://github.com/zerotao/expat
+
+3. This software is based in part of the work of the FreeType Team. FreeType is licensed under Freetype Project License; the license is available via http://www.freetype.org
+
+4. This software is based in part on the work of the Independent JPEG Group. libjpeg is licensed under Independent JPEG Group License; the license is available via http://www.ijg.org
+
+5. This software is based in part of the work of LibTomCrypt. LibTomCrypt is licensed under WTFPL; the license is available via http://www.libtom.net
+
+6. This software is based in part of the work of LibTomMath. LibTomMath is licensed under WTFPL; the license is available via http://www.libtom.net
+
+7. This software is based in part of the work of PCRE. PCRE is licensed under PCRE License; the license is available via http://www.pcre.org
+
+8. This software is based in part of the work of TomsFastMath. TomsFastMath is licensed under WTFPL; the license available via http://www.libtom.net
+
+9. This software is based in part of the work of zlib. zlib is licensed under zlib/libpng License; the license is available via http://www.zlib.net
+
+10. Portions of mDNSResponder are licensed under Apache-2.0, BSD-style terms, and NICTA Public Software Licence terms as described by the upstream Moddable SDK notice.
+
+11. Open Sans font family is licensed under the Apache License, Version 2.0 available from http://www.apache.org/licenses/LICENSE-2.0.html
+
+12. This software is based in part on the work of Daniel Beer <dlbeer@gmail.com>. Curve25519 is in the public domain.

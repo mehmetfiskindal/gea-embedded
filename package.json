@@ -1,0 +1,12 @@
+{
+  "name": "gea-embedded",
+  "version": "0.1.0",
+  "description": "A TSX-to-C embedded UI pipeline for ESP32 AMOLED apps and a browser-hosted WASM simulator.",
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "format-apps": "node scripts/format-apps.mjs",
+    "install-app": "node scripts/install-app.mjs",
+    "recover-apps": "node scripts/recover-apps.mjs",
+    "uninstall-app": "node scripts/uninstall-app.mjs"
+  }
+}

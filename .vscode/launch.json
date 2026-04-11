@@ -1,0 +1,224 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Gea Embedded: ESP32 setup",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: ESP32 setup",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: build selected example",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: build selected example",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: USB flash selected example",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: USB flash selected example",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: USB flash + monitor selected example",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: USB flash + monitor selected example",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: serial monitor",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: serial monitor",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: OTA selected example",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: OTA selected example",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: OTA selected example + logs",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: OTA selected example + logs",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: install selected app over USB",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: install selected app over USB",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: install all apps over USB",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: install all apps over USB",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: install selected app over OTA",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: install selected app over OTA",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: install all apps over OTA",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: install all apps over OTA",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: recover launcher over USB",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: recover launcher over USB",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: uninstall selected app over USB",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: uninstall selected app over USB",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: uninstall all apps over USB",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: uninstall all apps over USB",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: uninstall selected app over OTA",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: uninstall selected app over OTA",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: uninstall all apps over OTA",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: uninstall all apps over OTA",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: format apps over USB",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: format apps over USB",
+      "command": "true"
+    },
+    {
+      "name": "Gea Embedded: format apps over OTA",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Gea Embedded: format apps over OTA",
+      "command": "true"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "geaEmbeddedExample",
+      "type": "pickString",
+      "description": "ESP32-enabled example to build/deploy",
+      "options": [
+        "app-launcher",
+        "bouncing-balls",
+        "image-demo",
+        "analog-clock",
+        "static-card",
+        "typography",
+        "tilt-breakout",
+        "button-tetris",
+        "tic-tac-toe",
+        "bouncing-balls-jsx",
+        "hid-clicker",
+        "sky-hop",
+        "sky-hop-jsx"
+      ],
+      "default": "app-launcher"
+    },
+    {
+      "id": "geaEmbeddedSerialPort",
+      "type": "promptString",
+      "description": "USB serial port, or auto to let ESP-IDF detect it.",
+      "default": "auto"
+    },
+    {
+      "id": "geaEmbeddedInstallApp",
+      "type": "pickString",
+      "description": "App to install into the launcher",
+      "options": [
+        "bouncing-balls",
+        "image-demo",
+        "analog-clock",
+        "static-card",
+        "typography",
+        "tilt-breakout",
+        "button-tetris",
+        "tic-tac-toe",
+        "bouncing-balls-jsx",
+        "hid-clicker",
+        "sky-hop",
+        "sky-hop-jsx"
+      ],
+      "default": "button-tetris"
+    },
+    {
+      "id": "geaEmbeddedUninstallApp",
+      "type": "pickString",
+      "description": "App to uninstall from the launcher",
+      "options": [
+        "bouncing-balls",
+        "image-demo",
+        "analog-clock",
+        "static-card",
+        "typography",
+        "tilt-breakout",
+        "button-tetris",
+        "tic-tac-toe",
+        "bouncing-balls-jsx",
+        "hid-clicker",
+        "sky-hop",
+        "sky-hop-jsx"
+      ],
+      "default": "button-tetris"
+    },
+    {
+      "id": "geaEmbeddedBoardIp",
+      "type": "promptString",
+      "description": "Board IP address for WiFi OTA deploy",
+      "default": ""
+    }
+  ]
+}

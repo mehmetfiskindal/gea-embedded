@@ -1,0 +1,46 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('../../assets/fonts/Inter-Regular.ttf');
+}
+
+.app {
+  width: 410;
+  height: 502;
+  background-color: #000000;
+  overflow: hidden;
+}
+
+.ball-field {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 410;
+  height: 502;
+}
+
+.ball {
+  position: absolute;
+  width: 16;
+  height: 16;
+  border-radius: 8;
+}
+
+.fps-badge {
+  position: absolute;
+  font-family: 'Inter';
+  top: 10;
+  left: 10;
+  z-index: 10;
+  color: #ffffff;
+  font-size: 96;
+}
+
+.tap-counter {
+  position: absolute;
+  font-family: 'Inter';
+  top: 116;
+  left: 12;
+  z-index: 10;
+  color: #7ee7ff;
+  font-size: 34;
+}

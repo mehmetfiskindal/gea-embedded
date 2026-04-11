@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "build": "vite build",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "gea-embedded": "file:../../lib/gea-embedded"
+  },
+  "devDependencies": {
+    "@babel/parser": "latest",
+    "@babel/traverse": "latest",
+    "@babel/types": "latest",
+    "opentype.js": "latest",
+    "typescript": "latest",
+    "vite": "latest"
+  }
+}

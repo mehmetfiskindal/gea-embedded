@@ -1,0 +1,289 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('../../assets/fonts/Inter-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('../../assets/fonts/Oswald-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('../../assets/fonts/BebasNeue-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Cossette Texte';
+  src: url('../../assets/fonts/CossetteTexte-Regular.ttf');
+}
+
+.launcher-heading {
+  font-family: 'Bebas Neue';
+  font-size: 60;
+}
+
+.launcher-description {
+  font-family: 'Cossette Texte';
+  font-size: 28;
+}
+
+.launcher-card-title {
+  font-family: 'Bebas Neue';
+  font-size: 28;
+}
+
+.launcher-card-description {
+  font-family: 'Cossette Texte';
+  font-size: 18;
+}
+
+.app-shell-back-button {
+  width: 144;
+  height: 72;
+  border-radius: 24;
+}
+
+.app-shell-back-label {
+  font-family: 'Bebas Neue';
+  font-size: 48;
+}
+
+.ball-field {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 410;
+  height: 502;
+}
+
+.ball {
+  position: absolute;
+  width: 16;
+  height: 16;
+  border-radius: 8;
+  background-color: #fb7185;
+}
+
+.fps-badge {
+  position: absolute;
+  font-family: 'Inter';
+  top: 10;
+  left: 10;
+  z-index: 10;
+  color: #ffffff;
+  font-size: 96;
+}
+
+.tap-counter {
+  position: absolute;
+  font-family: 'Inter';
+  top: 116;
+  left: 12;
+  z-index: 10;
+  color: #7ee7ff;
+  font-size: 34;
+}
+
+.breakout-app {
+  width: 410;
+  height: 502;
+  background-color: #06111f;
+  overflow: hidden;
+}
+
+.hud {
+  position: absolute;
+  left: 16;
+  top: 18;
+  color: #e5e7eb;
+  font-size: 18;
+}
+
+.status-line {
+  position: absolute;
+  left: 16;
+  top: 468;
+  color: #94a3b8;
+  font-size: 12;
+}
+
+.brick-field {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 410;
+  height: 502;
+  overflow: visible;
+}
+
+.brick {
+  position: absolute;
+  width: 54;
+  height: 18;
+  border-radius: 5;
+}
+
+.paddle {
+  position: absolute;
+  top: 430;
+  width: 92;
+  height: 14;
+  border-radius: 7;
+  background-color: #f8fafc;
+}
+
+.hid-app {
+  width: 410;
+  height: 502;
+  flex-direction: column;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'Inter';
+  font-size: 16;
+}
+
+.statusBar {
+  width: 410;
+  height: 30;
+  background-color: #000000;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusText {
+  font-family: 'Inter';
+  font-size: 16;
+  color: #888888;
+}
+
+.screen {
+  flex: 1;
+  flex-direction: column;
+  width: 410;
+}
+
+.buttonLabel {
+  font-family: 'Inter';
+  font-size: 16;
+  color: #ffffff;
+}
+
+.prevButton {
+  flex: 1;
+  background-color: #1a1a2e;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+}
+
+.prevButton:active {
+  background-color: #16213e;
+}
+
+.nextButton {
+  flex: 1;
+  background-color: #0f3460;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+}
+
+.nextButton:active {
+  background-color: #1a508b;
+}
+
+.mouseToggleButton {
+  height: 40;
+  width: 410;
+  background-color: #333333;
+  justify-content: center;
+  align-items: center;
+}
+
+.mouseToggleButton:active {
+  background-color: #555555;
+}
+
+.navButton {
+  flex: 1;
+  background-color: #333333;
+  justify-content: center;
+  align-items: center;
+}
+
+.navButton:active {
+  background-color: #555555;
+}
+
+.leftClickButton {
+  flex: 1;
+  background-color: #1a1a2e;
+  justify-content: center;
+  align-items: center;
+}
+
+.leftClickButton:active {
+  background-color: #16213e;
+}
+
+.rightClickButton {
+  flex: 1;
+  background-color: #3d0000;
+  justify-content: center;
+  align-items: center;
+}
+
+.rightClickButton:active {
+  background-color: #550000;
+}
+
+.scrollZone {
+  width: 50;
+  background-color: #1a2e1a;
+  justify-content: center;
+  align-items: center;
+}
+
+.biasButton {
+  flex: 1;
+  background-color: #1f5134;
+  justify-content: center;
+  align-items: center;
+}
+
+.biasButton:active {
+  background-color: #2d734b;
+}
+
+.trackpadArea {
+  flex: 1;
+  background-color: #1a1a2e;
+  justify-content: center;
+  align-items: center;
+}
+
+.trackpadRightClick {
+  height: 60;
+  width: 410;
+  background-color: #3d0000;
+  justify-content: center;
+  align-items: center;
+}
+
+.trackpadRightClick:active {
+  background-color: #550000;
+}
+
+.bottomRow {
+  height: 40;
+  width: 410;
+  flex-direction: row;
+}
+
+.mouseButtonRow {
+  flex: 1;
+  flex-direction: row;
+  width: 410;
+}

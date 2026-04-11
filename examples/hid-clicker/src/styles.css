@@ -1,0 +1,151 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('../../../assets/fonts/Inter-Regular.ttf');
+}
+
+.app {
+  width: 410;
+  height: 502;
+  flex-direction: column;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'Inter';
+  font-size: 16;
+}
+
+.statusBar {
+  width: 410;
+  height: 30;
+  background-color: #000000;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusText {
+  font-family: 'Inter';
+  font-size: 16;
+  color: #888888;
+}
+
+.screen {
+  flex: 1;
+  flex-direction: column;
+  width: 410;
+}
+
+.buttonLabel {
+  font-family: 'Inter';
+  font-size: 16;
+  color: #ffffff;
+}
+
+.prevButton {
+  flex: 1;
+  background-color: #1a1a2e;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+}
+.prevButton:active {
+  background-color: #16213e;
+}
+
+.nextButton {
+  flex: 1;
+  background-color: #0f3460;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+}
+.nextButton:active {
+  background-color: #1a508b;
+}
+
+.mouseToggleButton {
+  height: 40;
+  width: 410;
+  background-color: #333333;
+  justify-content: center;
+  align-items: center;
+}
+.mouseToggleButton:active {
+  background-color: #555555;
+}
+
+.navButton {
+  flex: 1;
+  background-color: #333333;
+  justify-content: center;
+  align-items: center;
+}
+.navButton:active {
+  background-color: #555555;
+}
+
+.leftClickButton {
+  flex: 1;
+  background-color: #1a1a2e;
+  justify-content: center;
+  align-items: center;
+}
+.leftClickButton:active {
+  background-color: #16213e;
+}
+
+.rightClickButton {
+  flex: 1;
+  background-color: #3d0000;
+  justify-content: center;
+  align-items: center;
+}
+.rightClickButton:active {
+  background-color: #550000;
+}
+
+.scrollZone {
+  width: 50;
+  background-color: #1a2e1a;
+  justify-content: center;
+  align-items: center;
+}
+
+.biasButton {
+  flex: 1;
+  background-color: #1f5134;
+  justify-content: center;
+  align-items: center;
+}
+.biasButton:active {
+  background-color: #2d734b;
+}
+
+.trackpadArea {
+  flex: 1;
+  background-color: #1a1a2e;
+  justify-content: center;
+  align-items: center;
+}
+
+.trackpadRightClick {
+  height: 60;
+  width: 410;
+  background-color: #3d0000;
+  justify-content: center;
+  align-items: center;
+}
+.trackpadRightClick:active {
+  background-color: #550000;
+}
+
+.bottomRow {
+  height: 40;
+  width: 410;
+  flex-direction: row;
+}
+
+.mouseButtonRow {
+  flex: 1;
+  flex-direction: row;
+  width: 410;
+}

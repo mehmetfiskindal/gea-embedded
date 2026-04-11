@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('../../assets/fonts/Inter-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('../../assets/fonts/BebasNeue-Regular.ttf');
+}
+
+.sky-hop-title {
+  font-family: 'Bebas Neue';
+  font-size: 22;
+}
+
+.sky-hop-hud-text {
+  font-family: 'Inter';
+  font-size: 14;
+}
+
+.sky-hop-hud-score {
+  font-family: 'Inter';
+  font-size: 14;
+}
+
+.sky-hop-button-glyph {
+  font-family: 'Bebas Neue';
+  font-size: 36;
+}
+
+.sky-hop-restart-glyph {
+  font-family: 'Bebas Neue';
+  font-size: 18;
+}
+
+.sky-hop-overlay-title {
+  font-family: 'Bebas Neue';
+  font-size: 30;
+}
+
+.sky-hop-overlay-score {
+  font-family: 'Inter';
+  font-size: 16;
+}

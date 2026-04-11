@@ -1,0 +1,20 @@
+{
+  "name": "gea-embedded",
+  "version": "0.1.0",
+  "description": "Type declarations and UI components for Gea Embedded TSX apps.",
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "types": "./index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts"
+    }
+  },
+  "files": [
+    "Button.tsx",
+    "Settings",
+    "css.d.ts",
+    "index.d.ts"
+  ]
+}

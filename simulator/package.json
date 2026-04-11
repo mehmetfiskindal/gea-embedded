@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "start": "vite preview",
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest run",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "latest",
+    "vite": "latest",
+    "vitest": "latest"
+  }
+}

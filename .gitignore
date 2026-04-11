@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.vite/
+targets/web/generated/
+simulator/public/apps/*/app.js
+simulator/public/apps/*/module.wasm
+simulator/public/apps/*/assets/
+simulator/public/screen-runtime/module.wasm
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Environment overrides
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+
+# ESP-IDF / target-local generated files
+managed_components/
+targets/**/build/
+targets/**/sdkconfig
+targets/**/sdkconfig.old
+targets/**/main/include/wifi_config.h

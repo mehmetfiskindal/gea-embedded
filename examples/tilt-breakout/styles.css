@@ -1,0 +1,55 @@
+.breakout-app {
+  width: 410;
+  height: 502;
+  background-color: #06111f;
+  overflow: hidden;
+}
+
+.hud {
+  position: absolute;
+  left: 16;
+  top: 18;
+  color: #e5e7eb;
+  font-size: 18;
+}
+
+.status-line {
+  position: absolute;
+  left: 16;
+  top: 468;
+  color: #94a3b8;
+  font-size: 12;
+}
+
+.brick-field {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 410;
+  height: 502;
+  overflow: visible;
+}
+
+.brick {
+  position: absolute;
+  width: 54;
+  height: 18;
+  border-radius: 5;
+}
+
+.paddle {
+  position: absolute;
+  top: 430;
+  width: 92;
+  height: 14;
+  border-radius: 7;
+  background-color: #f8fafc;
+}
+
+.ball {
+  position: absolute;
+  width: 16;
+  height: 16;
+  border-radius: 8;
+  background-color: #fb7185;
+}
