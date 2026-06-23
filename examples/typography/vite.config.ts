@@ -1,16 +1,14 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import { geaEmbeddedPlugin } from '../../lib/vite-plugin-gea-embedded'
+import { resolveAppPaths } from '../../lib/vite-plugin-gea-embedded/target-paths'
 
-const web = process.env.GEA_EMBEDDED_TARGET === 'web'
-const appId = 'typography'
+const paths = resolveAppPaths('typography')
 
 export default defineConfig({
   plugins: [
     geaEmbeddedPlugin({
-      cOutput: web
-        ? `../../targets/web/generated/${appId}/gea_embedded_app_generated.c`
-        : `../../targets/esp32-s3-touch-amoled-2.06/build/apps/${appId}/gea_embedded_app_generated.c`
+      cOutput: paths.cOutput
     })
   ],
   resolve: {
@@ -21,12 +19,12 @@ export default defineConfig({
   build: {
     lib: {
       entry: 'index.tsx',
-      formats: [web ? 'es' : 'iife'],
-      ...(web ? {} : { name: 'gea_embedded' }),
-      fileName: () => (web ? 'app.js' : 'index.js')
+      formats: [paths.format],
+      ...(paths.libName ? { name: paths.libName } : {}),
+      fileName: paths.fileName
     },
-    outDir: web ? `../../simulator/public/apps/${appId}` : `../../targets/esp32-s3-touch-amoled-2.06/build/apps/${appId}/dist`,
-    emptyOutDir: !web,
+    outDir: paths.outDir,
+    emptyOutDir: process.env.GEA_EMBEDDED_TARGET !== 'web',
     minify: false
   }
 })

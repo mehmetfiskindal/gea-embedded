@@ -1,18 +1,30 @@
 import { defineConfig } from 'vite'
+import { resolve } from 'path'
+import { geaEmbeddedPlugin } from '../../lib/vite-plugin-gea-embedded'
+import { resolveAppPaths } from '../../lib/vite-plugin-gea-embedded/target-paths'
 
-const web = process.env.GEA_EMBEDDED_TARGET === 'web'
-const appId = 'bouncing-balls'
+const paths = resolveAppPaths('bouncing-balls')
 
 export default defineConfig({
+  plugins: [
+    geaEmbeddedPlugin({
+      cOutput: paths.cOutput
+    })
+  ],
+  resolve: {
+    alias: {
+      'gea-embedded': resolve(__dirname, '../../lib/gea-embedded')
+    }
+  },
   build: {
     lib: {
       entry: 'index.ts',
-      formats: [web ? 'es' : 'iife'],
-      ...(web ? {} : { name: 'gea_embedded' }),
-      fileName: () => (web ? 'app.js' : 'index.js')
+      formats: [paths.format],
+      ...(paths.libName ? { name: paths.libName } : {}),
+      fileName: paths.fileName
     },
-    outDir: web ? `../../simulator/public/apps/${appId}` : `../../targets/esp32-s3-touch-amoled-2.06/build/apps/${appId}/dist`,
-    emptyOutDir: !web,
+    outDir: paths.outDir,
+    emptyOutDir: process.env.GEA_EMBEDDED_TARGET !== 'web',
     minify: false
   }
 })

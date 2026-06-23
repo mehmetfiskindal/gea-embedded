@@ -1,0 +1,27 @@
+[Unit]
+Description=Gea Embedded UI (Raspberry Pi target)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/opt/gea-embedded/bin/geat-app-launcher
+Restart=on-failure
+RestartSec=2
+Environment=GEA_RPI_POLL_MS=33
+Environment=GEA_RPI_DIRTY_RECT=1
+Environment=GEA_RPI_DISPLAY_BACKEND=auto
+Environment=GEA_RPI_VIEWPORT=compat
+Environment=GEA_RPI_LOG_LEVEL=info
+Environment=GEA_RPI_MIRROR=1
+Environment=GEA_RPI_MIRROR_PORT=8082
+
+# Pi Zero: cap the process to ~96 MB to keep headroom for the system.
+MemoryMax=96M
+MemoryHigh=80M
+
+# SD-card friendliness
+IOSchedulingClass=idle
+
+[Install]
+WantedBy=multi-user.target

@@ -187,3 +187,126 @@ screen app builds, if supported
 simulator web build still works
 target clean build works from repo root
 ```
+
+## Worked Example: Raspberry Pi (Pi Zero W v1.1 + Waveshare 7" LCD (C))
+
+The `targets/rpi-display-1/` target is the canonical reference for a
+**Linux userspace** target. Where the ESP32 AMOLED target is bare-metal
+FreeRTOS with custom SPI/QSPI drivers, the Pi target uses `/dev/fb0`,
+`/dev/input/eventN`, and glibc. Most of the bring-up sequence is the
+same; the differences are listed here so future maintainers can follow
+the path.
+
+### What changed versus the ESP32 target
+
+| Concern | ESP32 | Pi |
+| ------- | ----- | -- |
+| App | `app_main()` over FreeRTOS, with separate `display_task` and `touch_task` | Single `main()` with a `poll()` loop on one thread |
+| Display driver | `esp_lcd_panel_*` with QSPI DMA | `mmap` on `/dev/fb0` + occasional `FBIO_WAITFORVSYNC` |
+| Input | `i2c_master` over FT6x36 | `read()` on `/dev/input/eventN` with MT-B filtering |
+| JS runtime | Moddable XS, AOT bytecode | QuickJS (vendored under `vendor/quickjs/`) |
+| HTTP fetch | `esp_http_client` (HTTPS via mbedtls) | `libcurl` (HTTPS optional, default off on Pi Zero) |
+| OTA | Two-slot A/B partition table | None in v1; `geat-rpi.sh install` does `rsync` |
+| Mirror | TCP 8082 + simulator relay | TCP 8082, identical JSON schema |
+
+### Files unique to the Pi target
+
+```
+targets/rpi-display-1/
+├── CMakeLists.txt                # system compiler, conditional KMS / libcurl
+├── cmake/
+│   ├── rpi.toolchain.cmake       # arm-linux-gnueabihf
+│   ├── FindKMS.cmake
+│   ├── FindQuickJS.cmake
+│   └── FindLibInput.cmake
+├── main/
+│   ├── app_main.c                # poll-based loop, dirty-rect aware
+│   ├── app_main_screen.c         # QuickJS entry (screen runtime)
+│   ├── display.c                 # dispatcher; binds shared/raster to a 410×502 (compat) or 1024×600 (native) surface
+│   ├── display_linuxfb.c         # primary; mmap fb, ARGB→RGB565 swizzle LUT
+│   ├── display_kms.c             # stub (Phase 2)
+│   ├── input.c                   # evdev + MT-B filter
+│   ├── platform.c                # POSIX time / sleep / mmap
+│   ├── log.c                     # leveled + TCP stream on 8081
+│   ├── wifi.c                    # nmcli parser
+│   ├── imu.c, mirror.c, ota.c    # stubs
+│   ├── assets.c                  # load from /opt/gea-embedded/apps/<id>/
+│   ├── quickjs_shim.{c,h}        # screen.* / WiFi.* host bindings
+│   └── include/                  # display.h, input.h, log.h, ...
+├── scripts/
+│   ├── geat-rpi.sh
+│   └── install-zero.sh
+├── systemd/
+│   └── gea-embedded.service
+└── README.md
+```
+
+### Display contract adaptations
+
+The shared `display.c` binds `gea_embedded_raster_t` to a back buffer
+sized either 410×502 (compat viewport, letterboxed) or 1024×600
+(native). The ESP32 display contract — `gea_embedded_display_fill_rect`,
+`_draw_text`, etc. — is preserved 1-for-1; the wrappers in `display.c`
+just forward to `gea_embedded_raster_*`. The actual panel push lives
+in `display_linuxfb.c` (or `display_kms.c` when KMS lands).
+
+`display_linuxfb.c` allocates two 16-bit shadows: one for the app
+viewport (compat or native) and one for the panel. The linuxfb backend
+converts RGB565 to the panel's native pixel format (RGB565 or ARGB8888)
+via a 64 K-entry LUT, copies only the dirty region, and uses
+`FBIO_WAITFORVSYNC` for vsync when the kernel supports it.
+
+### Compat viewport and 410×502 letterbox
+
+The existing app-render apps hardcode `<div style={{ width: 410, height: 502 }}>`.
+To avoid re-authoring 16 apps, the Pi target runs them in **compat
+viewport** mode: the raster binds to a 410×502 surface, the app
+renders into it, and on `flush()` the linuxfb backend copies the
+dirty region centered into the 1024×600 panel buffer (with letterbox
+padding). The resulting framebuffer, when compared pixel-for-pixel
+against the simulator output for a centered 410×502 region, matches
+exactly.
+
+### Build flow
+
+The Pi target's `CMakeLists.txt` mirrors the ESP32 one's `vite_build`
+custom command: when app sources change, `npm run build` runs in the
+app directory and produces the generated C plus thin JS. For
+app-render apps (the v1 default), the JS bundle is not linked. For
+screen-runtime apps, the JS bundle is fed through `qjsc` to produce
+bytecode that is linked into the binary as a C array.
+
+The v1 build system compiles natively on the Pi (arm-linux-gnueabihf
+host toolchain), and cross-compile is supported via
+`cmake/rpi.toolchain.cmake` plus a sysroot extracted from
+`balenalib/raspberry-pi-debian:bookworm-run`.
+
+### Bringing up a new app
+
+After the target compiles, adding a new app is identical to the
+ESP32 path:
+
+1. Add `targets.rpi` block to `examples/apps.json`:
+   ```json
+   "rpi": { "enabled": true, "viewport": "compat", "min_fps": 30 }
+   ```
+2. Build with `--app=<id>`:
+   ```bash
+   ./targets/rpi-display-1/scripts/geat-rpi.sh build --app=<id>
+   ```
+3. Run on the Pi:
+   ```bash
+   ./targets/rpi-display-1/scripts/geat-rpi.sh install pi@raspberrypi.local --app=<id>
+   ./targets/rpi-display-1/scripts/geat-rpi.sh run    pi@raspberrypi.local --app=<id>
+   ```
+
+The simulator and ESP32 target are unaffected: their `targets` flags
+in `apps.json` are independent of the new `rpi` block.
+
+### Verification at bring-up
+
+- [ ] Display init logs `using linuxfb backend (viewport 1024x600)` at boot.
+- [ ] `tvservice -s` on the Pi reports 1024×768 60Hz (reduced blank).
+- [ ] `evtest /dev/input/eventN` shows ABS_MT_* events from the LCD.
+- [ ] `tic-tac-toe` runs, USB mouse moves through the letterboxed viewport.
+- [ ] Framebuffer capture diff against simulator `tic-tac-toe` is 0 pixels.

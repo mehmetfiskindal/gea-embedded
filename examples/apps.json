@@ -11,6 +11,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30
         }
       }
     },
@@ -25,6 +30,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30
         }
       }
     },
@@ -39,6 +49,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30
         }
       }
     },
@@ -53,6 +68,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 25
         }
       }
     },
@@ -67,6 +87,12 @@
         },
         "esp32": {
           "enabled": false
+        },
+        "rpi": {
+          "enabled": false,
+          "viewport": "compat",
+          "min_fps": 30,
+          "note": "web-only; live data is simulator-oriented"
         }
       }
     },
@@ -81,6 +107,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30
         }
       }
     },
@@ -95,6 +126,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30
         }
       }
     },
@@ -109,6 +145,12 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30,
+          "note": "tilt input via I2C IMU (zero W v1.1 limited)"
         }
       }
     },
@@ -123,6 +165,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30
         }
       }
     },
@@ -137,6 +184,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30
         }
       }
     },
@@ -151,6 +203,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30
         }
       }
     },
@@ -165,6 +222,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30
         }
       }
     },
@@ -179,6 +241,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30
         }
       }
     },
@@ -193,6 +260,11 @@
         },
         "esp32": {
           "enabled": true
+        },
+        "rpi": {
+          "enabled": true,
+          "viewport": "compat",
+          "min_fps": 30
         }
       }
     }
