@@ -64,6 +64,8 @@ static int g_panel_h = GEA_RPI_PANEL_HEIGHT;
 static int g_viewport_w = GEA_RPI_COMPAT_WIDTH;
 static int g_viewport_h = GEA_RPI_COMPAT_HEIGHT;
 
+static int g_touch_crop = -1; /* -1 = auto-detect, 0 = stretch, 1 = crop (1:1 mapping) */
+
 /* ---- MT-B state ---- */
 
 typedef struct {
@@ -125,8 +127,25 @@ static void transform_xy(int src_x, int src_y, int *out_x, int *out_y) {
         }
     }
 
-    int panel_x = found ? scale_axis(src_x, dev_min_x, dev_max_x, g_panel_w - 1) : src_x;
-    int panel_y = found ? scale_axis(src_y, dev_min_y, dev_max_y, g_panel_h - 1) : src_y;
+    int crop_y = g_touch_crop;
+    if (crop_y < 0) {
+        /* Auto-detect: if the framebuffer height is 768 and we detect a 600-height touch device,
+         * it's the Waveshare 7inch LCD in DMT mode 16 (cropped display). */
+        if (found && (dev_max_y - dev_min_y) == 600 && g_panel_h == 768) {
+            crop_y = 1;
+        } else {
+            crop_y = 0;
+        }
+    }
+
+    int target_x_max = g_panel_w - 1;
+    int target_y_max = g_panel_h - 1;
+    if (crop_y && found) {
+        target_y_max = dev_max_y - dev_min_y;
+    }
+
+    int panel_x = found ? scale_axis(src_x, dev_min_x, dev_max_x, target_x_max) : src_x;
+    int panel_y = found ? scale_axis(src_y, dev_min_y, dev_max_y, target_y_max) : src_y;
 
     /* Compat viewport: clamp the panel coordinate into the centered
      * 410x502 region. Touches in the letterbox clamp to the edge. */
@@ -431,6 +450,13 @@ static void discover_devices(void) {
 /* ---- Public API ---- */
 
 int gea_embedded_input_init(gea_rpi_input_backend_t backend, const gea_rpi_input_callbacks_t *cbs) {
+    const char *crop_env = getenv("GEA_RPI_TOUCH_CROP");
+    if (crop_env) {
+        g_touch_crop = atoi(crop_env);
+    } else {
+        g_touch_crop = -1; /* auto-detect */
+    }
+
     if (cbs) g_cbs = *cbs;
     g_backend = backend;
     memset(g_slots, 0, sizeof(g_slots));
