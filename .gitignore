@@ -33,3 +33,4 @@ targets/**/build/
 targets/**/sdkconfig
 targets/**/sdkconfig.old
 targets/**/main/include/wifi_config.h
+rpi-sysroot/
