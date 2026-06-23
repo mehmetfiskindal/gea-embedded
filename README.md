@@ -465,6 +465,9 @@ Standard host-side cross-compilers (`gcc-arm-linux-gnueabihf`) often package com
    tail -F /tmp/geat-tic-tac-toe.log
    ```
 
+> [!TIP]
+> **Troubleshooting (Black Screen / Changes Not Compiled)**: If the app starts but the screen remains black (`vp_nonblack=0`), or C changes aren't compiled on the Pi (`100% Built target` immediately), run `touch build/rpi/apps/tic-tac-toe/gea_embedded_*` on the Pi. This updates the synced file timestamps and forces CMake to rebuild the C sources.
+
 For detailed instructions, troubleshooting, and pure cross-compilation alternatives, see [targets/rpi-display-1/README.md](file:///home/mehmet/gea-embedded/targets/rpi-display-1/README.md) and [Gerçek Cihazda Test Rehberi](file:///home/mehmet/gea-embedded/targets/rpi-display-1/docs/try-on-pi.md).
 
 ## Browser Simulator

@@ -373,6 +373,21 @@ ldd --version
 # Daha güvenli: Pi'de doğrudan derleyin
 ```
 
+### 6.8 Siyah Ekran (vp_nonblack=0) veya Kod Değişikliklerinin Derlenmemesi
+**Belirti:** Uygulama Pi üzerinde sorunsuz başlıyor ancak ekran tamamen siyah kalıyor ve loglarda `vp_nonblack=0` yazıyor. Ayrıca Pi'de `./geat-rpi.sh build` çalıştırıldığında `[100%] Built target` denilerek derleme anında bitiyor (değişiklikler algılanmıyor).
+
+**Neden:** `rsync` (veya `sync` komutu) dosyaları kopyalarken ana bilgisayardaki (Host) orijinal zaman damgasını (timestamp) korur. Eğer Pi üzerinde bu esnada temizlik (`rm -rf build/rpi`) yapıp yeni nesne dosyalarını (`.o` dosyalarını) oluşturduysanız, bu nesne dosyalarının oluşturulma tarihi, Host'tan gelen kaynak kodların tarihinden daha yeni olur. Derleyici (Make/CMake) dosyalarda değişiklik olmadığını varsayarak derlemeyi atlar ve eski boş şablonu (stub) çalıştırmaya devam eder.
+
+**Çözüm:** Pi üzerinde kaynak dosyaların zaman damgasını güncelleyerek derleyiciyi tetikleyin:
+```bash
+# Pi üzerinde:
+cd ~/gea-embedded
+touch build/rpi/apps/<app-id>/gea_embedded_*
+# Ardından derleme ve kurulumu tekrarlayın:
+./targets/rpi-display-1/scripts/geat-rpi.sh build --app=<app-id> --skip-vite
+./targets/rpi-display-1/scripts/geat-rpi.sh install localhost --app=<app-id>
+```
+
 ---
 
 ## 7. Geliştirme Döngüsü
