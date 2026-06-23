@@ -118,23 +118,26 @@ case "$cmd" in
         done
         remote_dir="~/gea-embedded"
         echo ">> syncing source to ${host}:${remote_dir}"
+        
+        sync_opts=()
+        if [ "$with_apps" = "1" ]; then
+            sync_opts+=(
+                --include="build/"
+                --include="build/rpi/"
+                --include="build/rpi/apps/"
+                --include="build/rpi/apps/**"
+                --exclude="build/**"
+            )
+        else
+            sync_opts+=(--exclude="build")
+        fi
+        
         rsync -avz --delete \
               --exclude='.git' \
-              --exclude='build' \
+              "${sync_opts[@]}" \
               --exclude='node_modules' \
               --exclude='*.log' \
               "${GEA_ROOT}/" "${host}:${remote_dir}/"
-        if [ "$with_apps" = "1" ]; then
-            # The build/ tree may not exist on the Pi yet (e.g. after a
-            # 'rm -rf build/rpi'). Pre-create the apps/ dir so the
-            # rsync below has a writable parent.
-            remote_home=$(ssh "${host}" 'printf %s "$HOME"' 2>/dev/null)
-            [[ -z "${remote_home}" ]] && remote_home="/root"
-            ssh "${host}" "mkdir -p ${remote_home}/gea-embedded/build/rpi/apps" 2>/dev/null
-            echo ">> also syncing build/rpi/apps (vite output for --skip-vite flow)"
-            rsync -avz --delete \
-                  "${BUILD_DIR}/apps/" "${host}:${remote_home}/gea-embedded/build/rpi/apps/"
-        fi
         echo ">> synced"
         ;;
 
@@ -142,13 +145,7 @@ case "$cmd" in
         host="${1:?usage: install HOST}"
         bin="${BUILD_DIR}/geat-app-${APP}"
         remote_path="/opt/gea-embedded/apps/${APP}/geat-app"
-        # Resolve the remote home directory first; tilde doesn't expand
-        # inside single quotes, which would break the test.
-        remote_home=$(ssh "${host}" 'printf %s "$HOME"' 2>/dev/null)
-        if [[ -z "${remote_home}" ]]; then
-            remote_home="/root"
-        fi
-        remote_bin="${remote_home}/gea-embedded/build/rpi/geat-app-${APP}"
+        remote_bin="~/gea-embedded/build/rpi/geat-app-${APP}"
 
         # Decide whether the local binary is usable, or whether we need
         # to fetch the remote one.
