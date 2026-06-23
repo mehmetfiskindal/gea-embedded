@@ -8,8 +8,9 @@ At a high level, the flow is:
 2. Compile that TSX into:
    - thin JavaScript for app state and event glue
    - generated C that builds the UI tree
-3. Render with the C engine on either:
+3. Render with the C engine on:
    - the ESP32 device target (AMOLED display)
+   - the Raspberry Pi target (specifically Raspberry Pi Zero W v1.1 + Waveshare 7" LCD)
    - the browser-hosted WASM simulator
 
 ## Repo Layout
@@ -19,6 +20,7 @@ At a high level, the flow is:
 - `simulator/` — Browser-hosted viewer for inspecting WASM-rendered output.
 - `lib/` — Type declarations for `gea-embedded` and the TSX-to-C Vite plugin.
 - `targets/esp32-s3-touch-amoled-2.06/` — Device target for the ESP32 AMOLED board.
+- `targets/rpi-display-1/` — Device target for the Raspberry Pi Zero W v1.1 (or Pi 1) + Waveshare 7" LCD.
 - `targets/shared/` — Shared runtime, UI, raster, and driver code used by multiple targets.
 - `targets/web/` — WebAssembly target and build script.
 - `vendor/` — Vendored third-party runtime code.
@@ -37,10 +39,11 @@ The repo has per-package JavaScript installs and target-specific native toolchai
 
 | Tool | Required for | Notes |
 | ---- | ------------ | ----- |
-| Node.js + npm | All example builds, tests, simulator UI, and ESP32 app selection | Current lockfiles use Vite 8, which requires Node.js `^20.19.0 || >=22.12.0`. Node 22+ is the simplest choice. |
+| Node.js + npm | All example builds, tests, simulator UI, and target app selection | Current lockfiles use Vite 8, which requires Node.js `^20.19.0 || >=22.12.0`. Node 22+ is the simplest choice. |
 | Host C compiler (`cc`, `gcc`, or `clang`) | ESP32 firmware builds | The ESP32 build compiles the vendored XS `xsc` bytecode compiler on your development machine. On macOS, install Xcode Command Line Tools with `xcode-select --install`. |
 | ESP-IDF v5.4+ | ESP32 firmware build, flash, monitor, and OTA | Required only for the ESP32 target. `./install.sh esp32s3` installs the ESP32-S3 toolchain and ESP-IDF Python tools. |
-| Emscripten SDK (`emsdk` / `emcc`) | Browser simulator WASM builds | Required for `targets/web/build-web.sh` and `targets/web/build-screen-runtime.sh`. Not required for ESP32-only firmware work. |
+| arm-linux-gnueabihf-gcc / g++ | Raspberry Pi Zero W / Pi 1 cross-builds | Required only for cross-compiling for the Raspberry Pi target on the host machine. |
+| Emscripten SDK (`emsdk` / `emcc`) | Browser simulator WASM builds | Required for `targets/web/build-web.sh` and `targets/web/build-screen-runtime.sh`. Not required for ESP32 or Raspberry Pi device work. |
 
 JavaScript dependencies are installed where you work. The root `package.json` only exposes repo-level helper commands; example dependencies still live in each example package:
 
@@ -120,7 +123,7 @@ npm run check
 
 ### 3. Choose a target
 
-From here you can either flash to the ESP32 board or preview in the browser simulator.
+From here you can flash to the ESP32 board, deploy to the Raspberry Pi target, or preview in the browser simulator.
 
 ## ESP32 Target
 
@@ -389,6 +392,73 @@ The `--app` flag selects which example to build by its id in `examples/apps.json
 **Boot loops or flash errors** — The board may need octal flash mode. In `idf.py menuconfig`, set **Serial flasher config > Flash type** to **Octal flash** and **Flash size** to **32 MB**.
 
 **WiFi not connecting** — Make sure `wifi_config.h` exists with the correct SSID and password. The board falls back to USB-only mode if WiFi fails.
+
+## Raspberry Pi Target
+
+Targets Raspberry Pi (specifically Raspberry Pi Zero W v1.1 or Pi 1 with 512 MB memory) + Waveshare 7inch HDMI LCD (C) (1024×600 USB capacitive touch) using the POSIX `/dev/fb0` linuxfb backend.
+
+### Prerequisites
+
+For Raspberry Pi work, you need Node.js/npm on your host, a cross-compiler on your host, and a configured Raspberry Pi Zero.
+
+1. **Install Cross-Compiler** (Debian/Ubuntu host example):
+   ```bash
+   sudo apt-get install -y gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf cmake rsync
+   ```
+2. **Raspberry Pi OS Lite** (32-bit recommended) installed on the SD card, with SSH and Wi-Fi enabled.
+
+### One-Time Target Setup
+
+1. **Configure Pi Zero device** (WiFi, graphics configuration, libraries):
+   ```bash
+   ./targets/rpi-display-1/scripts/install-zero.sh pi@raspberrypi.local
+   ```
+   *Note: This copies the config, modifies `/boot/firmware/config.txt` for the Waveshare 7inch HDMI LCD (C), installs needed library packages, and reboots.*
+
+2. **Prepare local Sysroot** on host (for cross-compilation header & library matching via Docker):
+   ```bash
+   docker create --name rpi-sysroot balenalib/raspberry-pi-debian:bookworm-run
+   docker cp rpi-sysroot:/usr ./rpi-sysroot
+   docker rm rpi-sysroot
+   ```
+
+### Cross-Build, Install, and Run
+
+1. **Build the app locally** (Vite build and generated C layout compilation):
+   First, build the example (e.g. `tic-tac-toe`):
+   ```bash
+   cd examples/tic-tac-toe
+   npm install
+   npm run build
+   cd ../..
+   ```
+
+2. **Cross-compile target binary**:
+   ```bash
+   ./targets/rpi-display-1/scripts/geat-rpi.sh cross ./rpi-sysroot
+   ```
+
+3. **Deploy binary & assets to the Pi**:
+   ```bash
+   ./targets/rpi-display-1/scripts/geat-rpi.sh install pi@raspberrypi.local
+   ```
+
+4. **Run the app on the Pi**:
+   ```bash
+   ./targets/rpi-display-1/scripts/geat-rpi.sh run pi@raspberrypi.local
+   ```
+
+5. **Stop running app**:
+   ```bash
+   ./targets/rpi-display-1/scripts/geat-rpi.sh stop pi@raspberrypi.local
+   ```
+
+6. **View logs remotely**:
+   ```bash
+   ./targets/rpi-display-1/scripts/geat-rpi.sh log pi@raspberrypi.local
+   ```
+
+For detailed instructions and native compilation info, see [targets/rpi-display-1/README.md](file:///home/mehmet/gea-embedded/gea-embedded/targets/rpi-display-1/README.md) and [Gerçek Cihazda Test Rehberi](file:///home/mehmet/gea-embedded/gea-embedded/targets/rpi-display-1/docs/try-on-pi.md).
 
 ## Browser Simulator
 
