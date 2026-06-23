@@ -422,10 +422,11 @@ For Raspberry Pi work, you need Node.js/npm on your host, a cross-compiler on yo
    docker rm rpi-sysroot
    ```
 
-### Cross-Build, Install, and Run
+### Cross-Build, Install, and Run (Hybrid Approach - Recommended for Pi Zero W v1.1)
 
-1. **Build the app locally** (Vite build and generated C layout compilation):
-   First, build the example (e.g. `tic-tac-toe`):
+Standard host-side cross-compilers (`gcc-arm-linux-gnueabihf`) often package compiler runtime startup files (`crtbegin.o`, `libgcc.a`) compiled for ARMv7. To prevent `Illegal instruction` crashes on Pi Zero's ARMv6 processor, the recommended flow is a **hybrid build**: run Vite on the host, and compile C natively on the Pi (skipping Node.js).
+
+1. **Build the app assets locally on host**:
    ```bash
    cd examples/tic-tac-toe
    npm install
@@ -433,32 +434,38 @@ For Raspberry Pi work, you need Node.js/npm on your host, a cross-compiler on yo
    cd ../..
    ```
 
-2. **Cross-compile target binary**:
+2. **Sync the source and Vite assets to the Pi**:
    ```bash
-   ./targets/rpi-display-1/scripts/geat-rpi.sh cross ./rpi-sysroot
+   ./targets/rpi-display-1/scripts/geat-rpi.sh sync pi@raspberrypi.local --with-apps
    ```
 
-3. **Deploy binary & assets to the Pi**:
+3. **Compile C natively on the Pi (skipping Vite)**:
+   SSH to the Pi, go to the repository, and run the native build:
    ```bash
-   ./targets/rpi-display-1/scripts/geat-rpi.sh install pi@raspberrypi.local
+   ssh pi@raspberrypi.local
+   cd ~/gea-embedded
+   ./targets/rpi-display-1/scripts/geat-rpi.sh build --app=tic-tac-toe --skip-vite
    ```
 
-4. **Run the app on the Pi**:
+4. **Install the compiled binary (on the Pi)**:
    ```bash
-   ./targets/rpi-display-1/scripts/geat-rpi.sh run pi@raspberrypi.local
+   sudo mkdir -p /opt/gea-embedded/apps/tic-tac-toe
+   sudo cp build/rpi/geat-app-tic-tac-toe /opt/gea-embedded/apps/tic-tac-toe/geat-app
+   sudo chown -R pi:pi /opt/gea-embedded
    ```
 
-5. **Stop running app**:
+5. **Run the app on the Pi**:
    ```bash
-   ./targets/rpi-display-1/scripts/geat-rpi.sh stop pi@raspberrypi.local
+   GEA_RPI_APP_ID=tic-tac-toe /opt/gea-embedded/apps/tic-tac-toe/geat-app
    ```
 
-6. **View logs remotely**:
+6. **Stop running app / View logs**:
+   Use standard systemd unit commands or check logs directly:
    ```bash
-   ./targets/rpi-display-1/scripts/geat-rpi.sh log pi@raspberrypi.local
+   tail -F /tmp/geat-tic-tac-toe.log
    ```
 
-For detailed instructions and native compilation info, see [targets/rpi-display-1/README.md](file:///home/mehmet/gea-embedded/gea-embedded/targets/rpi-display-1/README.md) and [Gerçek Cihazda Test Rehberi](file:///home/mehmet/gea-embedded/gea-embedded/targets/rpi-display-1/docs/try-on-pi.md).
+For detailed instructions, troubleshooting, and pure cross-compilation alternatives, see [targets/rpi-display-1/README.md](file:///home/mehmet/gea-embedded/targets/rpi-display-1/README.md) and [Gerçek Cihazda Test Rehberi](file:///home/mehmet/gea-embedded/targets/rpi-display-1/docs/try-on-pi.md).
 
 ## Browser Simulator
 

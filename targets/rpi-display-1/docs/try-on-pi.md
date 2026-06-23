@@ -153,15 +153,50 @@ sudo mkdir -p /opt/gea-embedded/{apps,bin,logs}
 sudo chown -R pi:pi /opt/gea-embedded
 ```
 
----
-
 ## 4. Build
 
-İki yol var: **yerel (Pi üzerinde)** veya **çapraz (geliştirme makinesinde)**. Pi Zero yavaş olduğu için çapraz derleme önerilir.
+Üç yol vardır: **Hibrit Derleme (Pi Zero için Önerilen)**, **Çapraz derleme (Cross-compilation)** veya **Yerel derleme (Pi üzerinde)**. 
 
-### 4.1 Çapraz derleme (önerilen)
+> [!WARNING]
+> Ana makinedeki standart çapraz derleyiciler (`gcc-arm-linux-gnueabihf`) başlangıç kütüphanelerini (startup/glue kodları) varsayılan olarak ARMv7-A hedefli getirdiği için Pi Zero'da `Illegal instruction` (Sıra Dışı Komut) hatası alabilirsiniz. Bu nedenle Pi Zero için **Hibrit Derleme** yöntemi önerilir.
 
-#### 4.1.1 Sysroot çıkar
+### 4.1 Hibrit Derleme (Pi Zero W v1.1 için En Sağlıklı Yol)
+Bu yöntemde JS/Vite derlemesi güçlü olan ana makinede yapılır; C derlemesi ise Pi'nin kendi ARMv6 kütüphaneleriyle uyumlu olması için Pi Zero üzerinde yerel olarak çalıştırılır.
+
+#### 4.1.1 Ana Makinede (Host) Vite Build & Sync
+```bash
+# 1. Vite build işlemini ana makinede çalıştırın
+cd /path/to/gea-embedded
+cd examples/tic-tac-toe
+npm install
+npm run build
+cd ../..
+
+# 2. Kaynak kodunu ve derlenmiş Vite çıktılarını Pi'ye senkronize edin
+./targets/rpi-display-1/scripts/geat-rpi.sh sync pi@raspberrypi.local --with-apps
+```
+
+#### 4.1.2 Pi Zero Üzerinde Yerel C Derlemesi
+Pi Zero terminaline geçin ve C derlemesini Vite adımını atlayarak (`--skip-vite`) çalıştırın:
+```bash
+ssh pi@raspberrypi.local
+cd ~/gea-embedded
+./targets/rpi-display-1/scripts/geat-rpi.sh build --app=tic-tac-toe --skip-vite
+```
+
+#### 4.1.3 Pi Üzerinde Kurulum
+```bash
+sudo mkdir -p /opt/gea-embedded/apps/tic-tac-toe
+sudo cp build/rpi/geat-app-tic-tac-toe /opt/gea-embedded/apps/tic-tac-toe/geat-app
+sudo chown -R pi:pi /opt/gea-embedded
+```
+
+---
+
+### 4.2 Çapraz Derleme (Alternatif)
+Eğer ARMv6 uyumlu özel bir cross-toolchain kullanıyorsanız bu yolu tercih edebilirsiniz.
+
+#### 4.2.1 Sysroot çıkar
 Docker ile hızlıca:
 ```bash
 docker create --name rpi-sysroot balenalib/raspberry-pi-debian:bookworm-run
@@ -170,42 +205,36 @@ docker rm rpi-sysroot
 # disk usage: ~250 MB
 ```
 
-> **Not:** Balenalib imajı kit'li olduğu için `arm-linux-gnueabihf-gcc` ana makinede kurulu olmalı.
-
-#### 4.1.2 Toolchain kur (ana makine)
+#### 4.2.2 Toolchain kur (ana makine)
 ```bash
 # Debian/Ubuntu:
 sudo apt-get install -y gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 ```
 
-#### 4.1.3 Derle
+#### 4.2.3 Derle
 ```bash
 cd /path/to/gea-embedded
 ./targets/rpi-display-1/scripts/geat-rpi.sh cross ./rpi-sysroot
 ```
 
-Bu:
-- `cmake` configure eder (armhf toolchain, sysroot)
-- Vite build (TSX → C) çalıştırır
-- Tüm shared C kütüphaneleri + app C'sini derler
-- `build/rpi/geat-app-tic-tac-toe` üretir (Pi için ELF armhf)
-
-#### 4.1.4 Binary'yi kontrol et
+#### 4.2.4 Binary'yi kontrol et
 ```bash
 file build/rpi/geat-app-tic-tac-toe
 # Expected: ELF 32-bit LSB executable, ARM, EABI5, ...
 ls -la build/rpi/geat-app-tic-tac-toe
 ```
 
-### 4.2 Yerel derleme (Pi üzerinde)
+---
 
-Pi Zero yavaş (~3-5 dakika) ama çalışır:
+### 4.3 Yerel Derleme (Tamamen Pi üzerinde - Yavaş)
+Tüm derleme (Node/Vite dahil) Pi üzerinde yapılır. Pi Zero çok yavaş olduğu için (~3-5 dakika) pek önerilmez:
 ```bash
 ssh pi@raspberrypi.local
 cd /path/to/gea-embedded  # rsync veya git clone ile aktarın
-cd targets/rpi-display-1/..
 ./targets/rpi-display-1/scripts/geat-rpi.sh build
 ```
+
+---
 
 ---
 
