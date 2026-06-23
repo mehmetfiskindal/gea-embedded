@@ -45,7 +45,7 @@ static int g_touch_start_x = 0, g_touch_start_y = 0;
 static int g_touch_dragged = 0;
 static int g_touch_press_id = -1;
 
-#define GEA_RPI_TAP_DRAG_THRESHOLD_PX 10
+#define GEA_RPI_TAP_DRAG_THRESHOLD_PX 50
 
 static void on_signal(int sig) {
     (void)sig;
@@ -104,11 +104,17 @@ static void on_touch_end(int x, int y, void *user) {
     if (g_touch_press_id >= 0) {
         gea_embedded_app_touch_end_element(g_touch_press_id, x, y);
     }
-    if (!g_touch_dragged) {
-        int cb_id = gea_embedded_ui_hit_test(x, y);
-        if (cb_id >= 0) {
-            gea_embedded_app_touch(cb_id);
-        }
+    /* Press dispatch: use the cell hit at touch_start when the touch began
+     * on a button; fall back to the touch_end position for fingers that
+     * landed just outside the cell (the WaveShare WS170120 drifts the y
+     * coordinate by ~70 px between the initial press and the first
+     * stable sample, which would otherwise mark a tap as a drag). */
+    int cb_id = g_touch_press_id;
+    if (cb_id < 0) {
+        cb_id = gea_embedded_ui_hit_test(x, y);
+    }
+    if (cb_id >= 0 && !g_touch_dragged) {
+        gea_embedded_app_touch(cb_id);
     }
     g_touch_press_id = -1;
     g_touch_dragged = 0;

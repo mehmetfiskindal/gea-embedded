@@ -430,7 +430,7 @@ Standard host-side cross-compilers (`gcc-arm-linux-gnueabihf`) often package com
    ```bash
    cd examples/tic-tac-toe
    npm install
-   npm run build
+   GEA_EMBEDDED_TARGET=rpi npm run build
    cd ../..
    ```
 

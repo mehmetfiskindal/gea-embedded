@@ -169,7 +169,7 @@ Bu yöntemde JS/Vite derlemesi güçlü olan ana makinede yapılır; C derlemesi
 cd /path/to/gea-embedded
 cd examples/tic-tac-toe
 npm install
-npm run build
+GEA_EMBEDDED_TARGET=rpi npm run build
 cd ../..
 
 # 2. Kaynak kodunu ve derlenmiş Vite çıktılarını Pi'ye senkronize edin
@@ -224,15 +224,10 @@ file build/rpi/geat-app-tic-tac-toe
 ls -la build/rpi/geat-app-tic-tac-toe
 ```
 
----
+### 4.3 Yerel Derleme (Tamamen Pi üzerinde - Desteklenmez)
 
-### 4.3 Yerel Derleme (Tamamen Pi üzerinde - Yavaş)
-Tüm derleme (Node/Vite dahil) Pi üzerinde yapılır. Pi Zero çok yavaş olduğu için (~3-5 dakika) pek önerilmez:
-```bash
-ssh pi@raspberrypi.local
-cd /path/to/gea-embedded  # rsync veya git clone ile aktarın
-./targets/rpi-display-1/scripts/geat-rpi.sh build
-```
+> [!CAUTION]
+> Pi Zero W v1.1 üzerinde `npm run build` veya `vite build` çalıştırmaya çalışmak, Node.js'in ARMv6 mimarisini desteklememesinden dolayı **Illegal instruction** hatasıyla çökecektir. Bu nedenle, JS/Vite derlemesini Pi Zero üzerinde doğrudan yapamazsınız. Derleme için her zaman **Hibrit Derleme (4.1)** yöntemini kullanmalı, Vite adımını ana makinede yapıp Pi üzerinde sadece C derlemesini çalıştırmalısınız.
 
 ---
 

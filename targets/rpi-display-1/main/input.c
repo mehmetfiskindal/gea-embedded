@@ -76,6 +76,13 @@ static mt_slot_t g_slots[GEA_INPUT_MAX_SLOTS];
 static int       g_active_slot = -1;
 static int       g_current_slot = 0;     /* most recent ABS_MT_SLOT */
 static int       g_pressed = 0;
+/* Set once the first SYN_REPORT of the current gesture has been
+ * processed. The WaveShare WS170120 emits several SYN_REPORTs per
+ * gesture (the extra ones carry only MSC_TIMESTAMP updates and
+ * sometimes drift the reported position by tens of pixels). Without
+ * this guard, each of those reports re-runs the press branch and
+ * we get duplicate touch_start callbacks. */
+static int       g_start_emitted = 0;
 static int       g_last_x = 0, g_last_y = 0;
 static int       g_cached_x = 0, g_cached_y = 0;
 static int       g_has_cached_move = 0;
@@ -289,22 +296,34 @@ static void drain_one_device(int idx) {
                         emit_touch_end_raw(rx, ry);
                         g_want_release = 0;
                         g_active_slot = -1;
+                        g_start_emitted = 0;
                     } else if (g_want_press) {
-                        /* Find a slot with a valid tracking_id. */
-                        int picked_slot = -1;
-                        for (int s = 0; s < GEA_INPUT_MAX_SLOTS; s++) {
-                            if (g_slots[s].tracking_id >= 0) {
-                                picked_slot = s;
-                                break;
+                        /* Some devices (e.g. WaveShare WS170120) emit
+                         * several SYN_REPORTs per gesture: the first
+                         * carries the actual press data, later ones
+                         * only MSC_TIMESTAMP updates but still report
+                         * SYN_REPORT. We only want one touch_start per
+                         * gesture. */
+                        if (g_start_emitted) {
+                            g_want_press = 0;
+                        } else {
+                            /* Find a slot with a valid tracking_id. */
+                            int picked_slot = -1;
+                            for (int s = 0; s < GEA_INPUT_MAX_SLOTS; s++) {
+                                if (g_slots[s].tracking_id >= 0) {
+                                    picked_slot = s;
+                                    break;
+                                }
                             }
+                            /* Fall back to the most-recently-set slot. */
+                            if (picked_slot < 0) picked_slot = g_current_slot;
+                            g_active_slot = picked_slot;
+                            emit_touch_start_raw(
+                                g_slots[picked_slot].x,
+                                g_slots[picked_slot].y);
+                            g_want_press = 0;
+                            g_start_emitted = 1;
                         }
-                        /* Fall back to the most-recently-set slot. */
-                        if (picked_slot < 0) picked_slot = g_current_slot;
-                        g_active_slot = picked_slot;
-                        emit_touch_start_raw(
-                            g_slots[picked_slot].x,
-                            g_slots[picked_slot].y);
-                        g_want_press = 0;
                     } else if (g_pressed) {
                         /* Ongoing touch: emit a move with the latest position. */
                         if (g_devs[idx].has_mt_xy) {
@@ -418,6 +437,7 @@ int gea_embedded_input_init(gea_rpi_input_backend_t backend, const gea_rpi_input
     for (int i = 0; i < MAX_INPUT_DEVS; i++) g_devs[i].fd = -1;
     g_active_slot = -1;
     g_pressed = 0;
+    g_start_emitted = 0;
     g_legacy_x = -1; g_legacy_y = -1;
     g_want_press = 0; g_want_release = 0;
     discover_devices();
